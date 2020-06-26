@@ -52,6 +52,10 @@ export default class OrbitView extends React.Component {
         this.eccentricGraphic = this.newEccentricGraphic();
         this.sunGraphic = this.newSunGraphic();
         this.planetGraphic = this.newPlanetGraphic();
+
+        this.arrowToSun = this.drawArrows();
+        this.arrowToEarth = this.drawArrows();
+
         this.overlay = new PIXI.Graphics();
         this.epicycle = new PIXI.Graphics();
         this.constellations = {};
@@ -99,12 +103,15 @@ export default class OrbitView extends React.Component {
         // this.app.stage.addChild(rope);
         this.app.stage.addChild(this.pathTracer.getPixiObject());
         this.app.stage.addChild(this.overlay);
+        this.app.stage.addChild(this.arrowToEarth);
+        this.app.stage.addChild(this.arrowToSun);
         this.app.stage.addChild(this.earthGraphic);
         this.app.stage.addChild(this.sunGraphic);
         this.app.stage.addChild(this.equantGraphic);
         this.app.stage.addChild(this.eccentricGraphic);
         this.app.stage.addChild(this.planetGraphic);
         this.app.stage.addChild(this.epicycle);
+
         // this.loadConstellations();
         this.updateAll(0); // initial update.
         this.pathTracer.clear(this.planetGraphic.x, this.planetGraphic.y);
@@ -188,6 +195,7 @@ export default class OrbitView extends React.Component {
         this.updateEquant();
         this.updateEccentric();
         this.updatePlanet();
+        this.updateArrows();
         this.updateOverlay();
     }
 
@@ -448,6 +456,16 @@ export default class OrbitView extends React.Component {
         return g;
     }
 
+    drawArrows() {
+        const g = new PIXI.Graphics();
+        // g.visible = true;
+
+        g.clear();
+        g.lineStyle(4.0, 0xedb7b7);
+
+        return g;
+    }
+
     updatePlanet() {
         this.planetGraphic.x = this.xUnitsToPixels(this.x_planet);
         this.planetGraphic.y = this.yUnitsToPixels(this.y_planet);
@@ -456,6 +474,23 @@ export default class OrbitView extends React.Component {
         }
     }
 
+    updateArrows() {
+        this.arrowToSun.clear();
+        this.arrowToEarth.clear();
+
+        // if (!this.props.showElongation) {
+        //     return;
+        // }
+
+        this.arrowToSun.lineStyle(3.5, 0xa64e4e);
+        this.arrowToEarth.lineStyle(3.5, 0xa64e4e);
+
+        this.arrowToSun.moveTo(this.planetGraphic.x, this.planetGraphic.y);
+        this.arrowToEarth.moveTo(this.planetGraphic.x, this.planetGraphic.y);
+
+        this.arrowToSun.lineTo(this.sunGraphic.x, this.sunGraphic.y);
+        this.arrowToEarth.lineTo(this.sideLength / 2, this.sideLength / 2);
+    }
 
     updateOverlay() {
         this.overlay.clear();
