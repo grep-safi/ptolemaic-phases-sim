@@ -35,6 +35,7 @@ export default class PtolemaicSystemSimulator extends React.Component {
             longitudes: {
                 sun_longitude: 0,
                 ecliptic_longitude: 0,
+                elongationAngle: 0,
             },
             time: 0,
             reset: false,

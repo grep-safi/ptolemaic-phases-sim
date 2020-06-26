@@ -296,10 +296,48 @@ export default class OrbitView extends React.Component {
         this.y_sun = 3 * R * Math.sin(2 * Math.PI * t);
         this.sun_longitude = Math.atan2(this.y_sun, this.x_sun) * 180 / Math.PI;
 
+        /* Calculate Earth */
+        this.x_earth = this.sideLength / 2;
+        this.y_earth = this.sideLength / 2;
+
+        let observerPos = {
+            x: this.x_earth,
+            y: this.y_earth,
+        };
+
+        let targetPos = {
+            x: this.x_planet,
+            y: this.y_planet,
+        };
+
+        let sunPos = {
+            x: this.x_sun,
+            y: this.y_sun,
+        };
+
+        let targetPlanetAngle = Math.atan2(observerPos.y - targetPos.y, observerPos.x - targetPos.x);
+        let sunAngle = Math.atan2(sunPos.y - targetPos.y, sunPos.x - targetPos.x);
+
+        if (-Math.PI < sunAngle && sunAngle < 0) {
+            sunAngle += 2 * Math.PI;
+        }
+
+        if (-Math.PI < targetPlanetAngle && targetPlanetAngle < 0) {
+            targetPlanetAngle += 2 * Math.PI;
+        }
+
+        let elongationAngle = targetPlanetAngle - sunAngle;
+
+        if (elongationAngle < 0) {
+            elongationAngle += 2 * Math.PI;
+        }
+
+
         /* Let the Longitudes be Known to other Components */
         this.props.onLongitudeChange({
             sun_longitude: this.sun_longitude,
             ecliptic_longitude: this.ecliptic_longitude,
+            elongationAngle: elongationAngle
         })
 
         /* For Debugging Purposes */

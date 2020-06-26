@@ -118,7 +118,7 @@ export default class TargetPlanetPhase extends React.Component {
     getElongationAngle() {
 
         // this.drawTargetPlanetSize(distObserverTarget, this.props.longitudes.ecliptic_longitude);
-        this.drawTargetPlanetSize(2, this.props.longitudes.ecliptic_longitude * Math.PI / 180);
+        this.drawTargetPlanetSize(2, this.props.longitudes.elongationAngle);
     }
 
     drawTargetPlanetSize(separationDistance, targetElongation) {
@@ -143,7 +143,6 @@ export default class TargetPlanetPhase extends React.Component {
             .range([minPix, maxPixelSize]);
 
         const targetPlanetSize = linearPix(separationDistance);
-        console.log(`sep: ${targetPlanetSize} `);
         this.targetPlanet.width = targetPlanetSize;
         this.targetPlanet.height = targetPlanetSize;
 
