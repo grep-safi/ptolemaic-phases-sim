@@ -107,6 +107,7 @@ export default class OrbitView extends React.Component {
         this.app.stage.addChild(this.overlay);
         this.app.stage.addChild(this.arrowToEarth);
         this.app.stage.addChild(this.arrowToSun);
+        this.app.stage.addChild(this.elongationArc);
         this.app.stage.addChild(this.earthGraphic);
         this.app.stage.addChild(this.sunGraphic);
         this.app.stage.addChild(this.equantGraphic);
@@ -198,6 +199,7 @@ export default class OrbitView extends React.Component {
         this.updateEccentric();
         this.updatePlanet();
         this.updateArrows();
+        this.updateArc();
         this.updateOverlay();
     }
 
@@ -350,11 +352,17 @@ export default class OrbitView extends React.Component {
             .domain([0.0, 3.0])
             .range([maxPix, minPix]);
 
+
+        let obsAngT = Math.atan2(observerPos.y - targetPos.y, observerPos.x - targetPos.x);
+        let sunAngT = Math.atan2(sunPos.y - targetPos.y, sunPos.x - targetPos.x);
+
         /* Let the Longitudes be Known to other Components */
         this.props.onLongitudeChange({
             sun_longitude: this.sun_longitude,
             ecliptic_longitude: this.ecliptic_longitude,
             elongationAngle: elongationAngle,
+            obsAngleTarget: obsAngT,
+            sunAngleTarget: sunAngT,
             size: scale(this.getDistance(observerPos, targetPos))
         });
 
@@ -632,20 +640,20 @@ export default class OrbitView extends React.Component {
         // If the user deselects the box for showing
         // elongation arc, then simply return
 
-        // if (!this.props.showElongation) {
-        //     return;
-        // }
+        if (!this.props.controls.showElongationAngle) {
+            return;
+        }
 
         let focusedBody = this.planetGraphic;
-        this.elongationArc.lineStyle(3.5, 0xa64e4e);
+        this.elongationArc.lineStyle(2.5, 0xa64e4e);
         this.elongationArc.moveTo(focusedBody.x, focusedBody.y);
         let east = this.greaterThan180();
         this.elongationArc.arc(
             focusedBody.x,
             focusedBody.y,
-            80,
-            -this.props.obsAngleTarget,
-            -this.props.sunAngleTarget,
+            20,
+            -this.props.longitudes.obsAngleTarget,
+            -this.props.longitudes.sunAngleTarget,
             east
         );
 
@@ -653,21 +661,30 @@ export default class OrbitView extends React.Component {
     }
 
     updateArcArrow(east) {
+        let radii = [149, 172];
+        let shift = 122;
+        radii[0] -= shift;
+        radii[1] -= shift;
         if (east) {
-            this.halfArrow(-0.09, -10.2, 149);
-            this.halfArrow(-0.09, 10.2, 172);
+            // this.halfArrow(-0.09, -10.2, radii[0]);
+            // this.halfArrow(-0.09, 10.2, radii[1]);
+
+            this.halfArrow(-0.30, -10.2, radii[0]);
+            this.halfArrow(-0.30, 10.2, radii[1]);
+
         } else {
-            this.halfArrow(0.085, 10.2, 149);
-            this.halfArrow(0.085, -10.2, 172);
+            // this.halfArrow(0.085, 10.2, radii[0]);
+            // this.halfArrow(0.085, -10.2, radii[1]);
+
+            this.halfArrow(0.30, 10.2, radii[0]);
+            this.halfArrow(0.30, -10.2, radii[1]);
         }
     }
 
     halfArrow(angleShift, angleReverse, rad) {
-        this.elongationArc.lineStyle(3.5, 0xa64e4e);
-        let smt = getPlanetPos(
-            this.props.radiusTargetPlanet,
-            this.props.targetPlanetAngle
-        );
+        this.elongationArc.lineStyle(2.5, 0xa64e4e);
+
+        let smt = this.planetGraphic;
 
         let startX = smt.x;
         let startY = smt.y;
@@ -680,19 +697,16 @@ export default class OrbitView extends React.Component {
         let centrePointY = ((startY + endY) / 2.0);
 
         let angle = Math.atan2(endY - startY, endX - startX) + angleReverse;
-        let dist = 10;
+        let dist = 9;
 
         this.elongationArc.moveTo((Math.sin(angle) * dist + centrePointX), (-Math.cos(angle) * dist + centrePointY));
         this.elongationArc.lineTo((-Math.sin(angle) * dist + centrePointX), (Math.cos(angle) * dist + centrePointY));
     }
 
     closerY(angleShift, rad) {
-        let smt = getPlanetPos(
-            this.props.radiusObserverPlanet,
-            this.props.observerPlanetAngle
-        );
+        let smt = new PIXI.Point(this.sideLength / 2, this.sideLength / 2);
 
-        let focusedBody = this.targetPlanetContainer;
+        let focusedBody = this.planetGraphic;
         let angle = Math.atan2(smt.y - focusedBody.y, smt.x - focusedBody.x) + angleShift;
 
         let radius = rad;
@@ -703,14 +717,14 @@ export default class OrbitView extends React.Component {
     }
 
     greaterThan180() {
-        let sunAng = this.props.sunAngleTarget;
-        let targetAng = this.props.obsAngleTarget;
+        let sunAng = this.props.longitudes.sunAngleTarget;
+        let targetAng = this.props.longitudes.obsAngleTarget;
 
-        if (-Math.PI < this.props.sunAngleTarget && this.props.sunAngleTarget < 0) {
+        if (-Math.PI < this.props.longitudes.sunAngleTarget && this.props.longitudes.sunAngleTarget < 0) {
             sunAng += 2 * Math.PI;
         }
 
-        if (-Math.PI < this.props.obsAngleTarget && this.props.obsAngleTarget < 0) {
+        if (-Math.PI < this.props.longitudes.obsAngleTarget && this.props.longitudes.obsAngleTarget < 0) {
             targetAng += 2 * Math.PI;
         }
 

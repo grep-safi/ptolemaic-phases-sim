@@ -159,7 +159,6 @@ export default class TargetPlanetPhase extends React.Component {
         // this.distanceText.text = `observer-target distance:\n${Math.round(this.getDistanceBetweenBodies() * 100) / 100} au`;
 
         let num = elongationAngle * 180 / Math.PI;
-        console.log(`nums: ${num}`);
 
         let direction = 'E';
         if (num > 180) {

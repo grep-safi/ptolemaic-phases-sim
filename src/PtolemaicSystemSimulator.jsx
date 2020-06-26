@@ -38,6 +38,8 @@ export default class PtolemaicSystemSimulator extends React.Component {
                 ecliptic_longitude: 0,
                 elongationAngle: 0,
                 size: 275,
+                obsAngleTarget: 0,
+                sunAngleTarget: 0,
             },
             time: 0,
             reset: false,
@@ -56,6 +58,7 @@ export default class PtolemaicSystemSimulator extends React.Component {
                             className = "OrbitView"
                             planetaryParameters={this.state.planetaryParameters}
                             controls={this.state.controls}
+                            longitudes={this.state.longitudes}
                             onLongitudeChange={this.handleNewLongitudes.bind(this)}
                             onTimeChange={this.handleNewTime.bind(this)}
                             ref={this.orbitViewRef}
