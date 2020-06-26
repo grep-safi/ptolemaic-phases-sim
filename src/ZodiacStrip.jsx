@@ -24,19 +24,9 @@ export default class ZodiacStrip extends React.Component {
     }
 
     render() {
-        // const debugOutput = {
-        //     ecliptic_longitude: this.props.longitudes.ecliptic_longitude,
-        //     sun_longitude: this.props.longitudes.sun_longitude,
-        //     adjusted_eclip: this.longitudeToLocationX(this.props.longitudes.ecliptic_longitude),
-        //     adjusted_sun: this.longitudeToLocationX(this.props.longitudes.sun_longitude),
-        //     planetType: this.props.planetType,
-        // }
         return (
             <React.Fragment>
                 <div ref={(thisDiv) => { this.pixiElement = thisDiv; }} />
-                {/*
-                <pre>{JSON.stringify(debugOutput, null, '\t')}</pre>
-                */}
             </React.Fragment>
         );
     }

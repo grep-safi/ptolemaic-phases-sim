@@ -4,6 +4,7 @@ import OrbitView from './OrbitView.jsx';
 import PlanetaryParameters from './PlanetaryParameters.jsx';
 import ControlsAndSettings from './ControlsAndSettings.jsx';
 import ZodiacStrip from './ZodiacStrip.jsx';
+import TargetPlanetPhase from "./TargetPlanetPhase";
 import Timer from './Timer.jsx';
 import TitleBar from './TitleBar.jsx';
 
@@ -56,11 +57,18 @@ export default class PtolemaicSystemSimulator extends React.Component {
                             onTimeChange={this.handleNewTime.bind(this)}
                             ref={this.orbitViewRef}
                         />
-                        <ZodiacStrip
+
+                        <TargetPlanetPhase
                             className="ZodiacStrip"
                             longitudes={this.state.longitudes}
                             planetType={this.state.planetaryParameters.planetType}
                         />
+
+                        {/*<ZodiacStrip*/}
+                        {/*    className="ZodiacStrip"*/}
+                        {/*    longitudes={this.state.longitudes}*/}
+                        {/*    planetType={this.state.planetaryParameters.planetType}*/}
+                        {/*/>*/}
                     </div>
                     <div className="box rightBox">
                         <div className="controlSection">

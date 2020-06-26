@@ -104,7 +104,7 @@ export default class OrbitView extends React.Component {
         this.app.stage.addChild(this.eccentricGraphic);
         this.app.stage.addChild(this.planetGraphic);
         this.app.stage.addChild(this.epicycle);
-        this.loadConstellations();
+        // this.loadConstellations();
         this.updateAll(0); // initial update.
         this.pathTracer.clear(this.planetGraphic.x, this.planetGraphic.y);
         this.animationFrameIdentifier = window.requestAnimationFrame(this.animationFrameLoop);
@@ -322,7 +322,7 @@ export default class OrbitView extends React.Component {
 
     newEarthGraphic() {
         const g = new PIXI.Graphics();
-        g.lineStyle(2, 0xFFFFFF, 1);
+        g.lineStyle(0.5, 0x000000, 1);
         g.beginFill(0x0000FF, 1);
         let w = this.sideLength / 2;
         let h = this.sideLength / 2;
@@ -335,7 +335,7 @@ export default class OrbitView extends React.Component {
     newSunGraphic() {
         const g = new PIXI.Graphics();
         g.clear();
-        g.lineStyle(2, 0xFFFFFF, 1);
+        g.lineStyle(0.5, 0x000000, 1);
         g.beginFill(0xf5c242, 1);
         g.drawCircle(0, 0, this.sideLength / 50);
         g.endFill();
@@ -388,7 +388,7 @@ export default class OrbitView extends React.Component {
 
     newPlanetGraphic() {
         const g = new PIXI.Graphics();
-        g.lineStyle(2, 0xFFFFFF);
+        g.lineStyle(0.5, 0x000000);
         g.beginFill(0xEE0000, 1);
         g.drawCircle(0, 0, 0.01 * this.sideLength);
         g.endFill();

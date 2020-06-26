@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 
 /* The image file that will determine how the trace looks */
-const TRAIL_TEXTURE = PIXI.Texture.from('img/trail.png');
+const TRAIL_TEXTURE = PIXI.Texture.from('img/trail_w.png');
 
 /* history size determines the maximum number of points to keep track of. */
 const HISTORY_SIZE = 5000;
@@ -22,7 +22,6 @@ const ROPE_SIZE = Math.floor(HISTORY_SIZE * 5);
  * in the OrbitView.
  */
 export default class PathTracer {
-
     constructor(pathLength) {
         this.historyX = [];
         this.historyY = [];
@@ -38,8 +37,8 @@ export default class PathTracer {
         }
 
         this.rope = new PIXI.SimpleRope(TRAIL_TEXTURE, this.points);
-        this.setPathLength(pathLength);
         this.rope.blendmode = PIXI.BLEND_MODES.ADD;
+        this.setPathLength(pathLength);
     }
 
     getPixiObject() {
@@ -99,7 +98,6 @@ export default class PathTracer {
 
 
 // =================================================================
-
 
 
 
