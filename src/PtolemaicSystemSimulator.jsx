@@ -30,7 +30,7 @@ export default class PtolemaicSystemSimulator extends React.Component {
                 showEarthSunLine: false,
                 showEpicyclePlanetLine: false,
                 showEccentricDeferentLine: false,
-                showElongationAngle: true,
+                showElongationAngle: false,
                 pathDuration: 0.2
             },
             longitudes: {

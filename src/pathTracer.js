@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 
 /* The image file that will determine how the trace looks */
-const TRAIL_TEXTURE = PIXI.Texture.from('img/trail_w.png');
+const TRAIL_TEXTURE = PIXI.Texture.from('img/trail.png');
 
 /* history size determines the maximum number of points to keep track of. */
 const HISTORY_SIZE = 5000;
