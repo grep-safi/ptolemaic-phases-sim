@@ -47,8 +47,8 @@ export default class TargetPlanetPhase extends React.Component {
 
         this.targetPlanet = this.drawTargetPlanetZodiac();
 
-        // this.elongationText = this.drawText('Elongation: 180', 15, 10);
-        // this.elongationDirectionText = this.drawText('', 160, 10);
+        this.elongationText = this.drawText('Elongation: 180', 15, 10);
+        this.elongationDirectionText = this.drawText('', 160, 10);
         // this.distanceText = this.drawText(`observer-target distance: \n${this.getDistanceBetweenBodies()} au`, 390, 10);
         this.drawShades();
         this.drawPhase(this.leftShade, this.rightShade, this.convertPhase(Math.PI), 1.002 * (275 / 2));
@@ -140,9 +140,10 @@ export default class TargetPlanetPhase extends React.Component {
 
         const linearPix = d3.scaleLinear()
             .domain([maxDist, minDist])
-            .range([minPix, maxPixelSize]);
+            .range([maxPixelSize, maxPixelSize]);
 
-        const targetPlanetSize = linearPix(separationDistance);
+        // const targetPlanetSize = linearPix(separationDistance);
+        const targetPlanetSize = this.props.longitudes.size;
         this.targetPlanet.width = targetPlanetSize;
         this.targetPlanet.height = targetPlanetSize;
 
@@ -152,11 +153,11 @@ export default class TargetPlanetPhase extends React.Component {
 
     animate() {
         this.getElongationAngle();
-        // this.updateTexts();
+        this.updateTexts(this.props.longitudes.elongationAngle);
     }
 
     updateTexts(elongationAngle) {
-        this.distanceText.text = `observer-target distance:\n${Math.round(this.getDistanceBetweenBodies() * 100) / 100} au`;
+        // this.distanceText.text = `observer-target distance:\n${Math.round(this.getDistanceBetweenBodies() * 100) / 100} au`;
 
         let num = elongationAngle * 180 / Math.PI;
         console.log(`nums: ${num}`);

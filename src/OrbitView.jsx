@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as PIXI from 'pixi.js'
+import * as d3 from 'd3-scale';
 import { PlanetTypes } from './enums.jsx';
 import PathTracer from './pathTracer.js';
 
@@ -297,8 +298,8 @@ export default class OrbitView extends React.Component {
         this.sun_longitude = Math.atan2(this.y_sun, this.x_sun) * 180 / Math.PI;
 
         /* Calculate Earth */
-        this.x_earth = this.sideLength / 2;
-        this.y_earth = this.sideLength / 2;
+        this.x_earth = 0;
+        this.y_earth = 0;
 
         let observerPos = {
             x: this.x_earth,
@@ -332,13 +333,20 @@ export default class OrbitView extends React.Component {
             elongationAngle += 2 * Math.PI;
         }
 
+        let minPix = 100;
+        let maxPix = 275;
+
+        const scale = d3.scaleLinear()
+            .domain([0.0, 3.0])
+            .range([maxPix, minPix]);
 
         /* Let the Longitudes be Known to other Components */
         this.props.onLongitudeChange({
             sun_longitude: this.sun_longitude,
             ecliptic_longitude: this.ecliptic_longitude,
-            elongationAngle: elongationAngle
-        })
+            elongationAngle: elongationAngle,
+            size: scale(this.getDistance(observerPos, targetPos))
+        });
 
         /* For Debugging Purposes */
         // this.setState({
@@ -356,6 +364,13 @@ export default class OrbitView extends React.Component {
         //     y_sun: this.y_sun,
         //     sun_longitude: this.sun_longitude,
         // })
+    }
+
+    getDistance(firstBody, secondBody) {
+        let diffX = Math.pow((firstBody.x - secondBody.x), 2);
+        let diffY = Math.pow((firstBody.y - secondBody.y), 2);
+
+        return Math.sqrt(diffX + diffY);
     }
 
     newEarthGraphic() {
