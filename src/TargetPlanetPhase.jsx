@@ -2,7 +2,7 @@ import React from 'react';
 import * as PIXI from 'pixi.js';
 import * as d3 from 'd3-scale';
 
-const WIDTH = 600;
+const WIDTH = 700;
 const HEIGHT = 300;
 
 const MAINVIEW_WIDTH = 600;
@@ -23,7 +23,7 @@ export default class TargetPlanetPhase extends React.Component {
 
     render() {
         return (
-            <div className="ZodiacStrip"
+            <div className="planet-phase"
                  ref={(thisDiv) => {this.el = thisDiv;}} />
         );
     }

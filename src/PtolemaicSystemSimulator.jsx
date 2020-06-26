@@ -30,7 +30,7 @@ export default class PtolemaicSystemSimulator extends React.Component {
                 showEarthSunLine: false,
                 showEpicyclePlanetLine: false,
                 showEccentricDeferentLine: false,
-                showElongationAngle: false,
+                showElongationAngle: true,
                 pathDuration: 0.2
             },
             longitudes: {
@@ -65,7 +65,7 @@ export default class PtolemaicSystemSimulator extends React.Component {
                         />
 
                         <TargetPlanetPhase
-                            className="ZodiacStrip"
+                            // className="ZodiacStrip"
                             longitudes={this.state.longitudes}
                             planetType={this.state.planetaryParameters.planetType}
                         />

@@ -40,7 +40,11 @@ canvas {
     height: calc(800px + 1em);
 }
 
-/* 
+.planet-phase {
+    margin-top: -110px;
+}
+
+/*
 .CheckBoxLabel {
 }
 .CheckboxWrap_unchecked,

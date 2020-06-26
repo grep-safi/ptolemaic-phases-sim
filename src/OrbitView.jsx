@@ -42,7 +42,7 @@ export default class OrbitView extends React.Component {
          * dimensions of the drawings.
          * @type {Number}
          */
-        this.sideLength = 800;
+        this.sideLength = 700;
 
         this.pixiElement = null;
         this.app = null;
