@@ -1,7 +1,6 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import * as d3 from 'd3-scale';
-import PropTypes from 'prop-types';
 
 const WIDTH = 600;
 const HEIGHT = 300;
@@ -277,14 +276,3 @@ export default class TargetPlanetPhase extends React.Component {
         return phase;
     }
 }
-
-// These are all the parameters that MUST be passed
-// Into TargetPlanetPhase by main.jsx
-TargetPlanetPhase.propTypes = {
-    radiusObserverPlanet: PropTypes.number.isRequired,
-    observerPlanetAngle: PropTypes.number.isRequired,
-    radiusTargetPlanet: PropTypes.number.isRequired,
-    targetPlanetAngle: PropTypes.number.isRequired,
-
-    updateAngles: PropTypes.func.isRequired
-};

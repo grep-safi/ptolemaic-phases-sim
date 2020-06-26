@@ -56,6 +56,8 @@ export default class OrbitView extends React.Component {
         this.arrowToSun = this.drawArrows();
         this.arrowToEarth = this.drawArrows();
 
+        this.elongationArc = this.drawArc();
+
         this.overlay = new PIXI.Graphics();
         this.epicycle = new PIXI.Graphics();
         this.constellations = {};
@@ -478,9 +480,9 @@ export default class OrbitView extends React.Component {
         this.arrowToSun.clear();
         this.arrowToEarth.clear();
 
-        // if (!this.props.showElongation) {
-        //     return;
-        // }
+        if (!this.props.controls.showElongationAngle) {
+            return;
+        }
 
         this.arrowToSun.lineStyle(3.5, 0xa64e4e);
         this.arrowToEarth.lineStyle(3.5, 0xa64e4e);
@@ -588,6 +590,143 @@ export default class OrbitView extends React.Component {
             this.y_sun = 3 * Math.sin(2 * Math.PI * (this.currentTime + this.deltaTimeFromDrag));
             this.updateSun();
         }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    drawArc() {
+        const elongationArc = new PIXI.Graphics();
+        elongationArc.visible = true;
+
+        elongationArc.clear();
+        elongationArc.lineStyle(2, 0xe8c3c3);
+        elongationArc.arc(
+            this.sideLength / 2,
+            this.sideLength / 2,
+            45,
+            0,
+            0,
+            true
+        );
+
+        return elongationArc;
+    }
+
+    updateArc() {
+        this.elongationArc.clear();
+        // If the user deselects the box for showing
+        // elongation arc, then simply return
+
+        // if (!this.props.showElongation) {
+        //     return;
+        // }
+
+        let focusedBody = this.planetGraphic;
+        this.elongationArc.lineStyle(3.5, 0xa64e4e);
+        this.elongationArc.moveTo(focusedBody.x, focusedBody.y);
+        let east = this.greaterThan180();
+        this.elongationArc.arc(
+            focusedBody.x,
+            focusedBody.y,
+            80,
+            -this.props.obsAngleTarget,
+            -this.props.sunAngleTarget,
+            east
+        );
+
+        this.updateArcArrow(east);
+    }
+
+    updateArcArrow(east) {
+        if (east) {
+            this.halfArrow(-0.09, -10.2, 149);
+            this.halfArrow(-0.09, 10.2, 172);
+        } else {
+            this.halfArrow(0.085, 10.2, 149);
+            this.halfArrow(0.085, -10.2, 172);
+        }
+    }
+
+    halfArrow(angleShift, angleReverse, rad) {
+        this.elongationArc.lineStyle(3.5, 0xa64e4e);
+        let smt = getPlanetPos(
+            this.props.radiusTargetPlanet,
+            this.props.targetPlanetAngle
+        );
+
+        let startX = smt.x;
+        let startY = smt.y;
+
+        let receive = this.closerY(angleShift, rad);
+        let endX = receive.x;
+        let endY = receive.y;
+
+        let centrePointX = ((startX + endX) / 2.0);
+        let centrePointY = ((startY + endY) / 2.0);
+
+        let angle = Math.atan2(endY - startY, endX - startX) + angleReverse;
+        let dist = 10;
+
+        this.elongationArc.moveTo((Math.sin(angle) * dist + centrePointX), (-Math.cos(angle) * dist + centrePointY));
+        this.elongationArc.lineTo((-Math.sin(angle) * dist + centrePointX), (Math.cos(angle) * dist + centrePointY));
+    }
+
+    closerY(angleShift, rad) {
+        let smt = getPlanetPos(
+            this.props.radiusObserverPlanet,
+            this.props.observerPlanetAngle
+        );
+
+        let focusedBody = this.targetPlanetContainer;
+        let angle = Math.atan2(smt.y - focusedBody.y, smt.x - focusedBody.x) + angleShift;
+
+        let radius = rad;
+        let y = radius * Math.sin(angle);
+        let x = radius * Math.cos(angle);
+
+        return new PIXI.Point(focusedBody.x + x, focusedBody.y + y);
+    }
+
+    greaterThan180() {
+        let sunAng = this.props.sunAngleTarget;
+        let targetAng = this.props.obsAngleTarget;
+
+        if (-Math.PI < this.props.sunAngleTarget && this.props.sunAngleTarget < 0) {
+            sunAng += 2 * Math.PI;
+        }
+
+        if (-Math.PI < this.props.obsAngleTarget && this.props.obsAngleTarget < 0) {
+            targetAng += 2 * Math.PI;
+        }
+
+        let differenceInAngles = targetAng - sunAng;
+
+        if (differenceInAngles < 0) {
+            differenceInAngles += 2 * Math.PI;
+        }
+
+        let num = Math.round(differenceInAngles * 180 / Math.PI * 10) / 10;
+
+        if (num > 180) {
+            return true;
+        }
+
+        return false;
     }
 }
 
