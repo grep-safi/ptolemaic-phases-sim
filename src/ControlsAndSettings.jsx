@@ -50,11 +50,11 @@ export default class ControlsAndSettings extends React.Component {
                 <div className="custom-control custom-checkbox">
                     {CheckBox("showDeferent", "Show Deferent")}
                     {CheckBox("showEpicycle", "Show Epicycle")}
-                    {CheckBox("showPlanetVector", "Show Planet Vector")}
-                    {CheckBox("showEquantVector", "Show Equant Vector")}
-                    {CheckBox("showEarthSunLine", "Show Earth-Sun Line")}
-                    {CheckBox("showEpicyclePlanetLine", "Show Epicycle Planet Line")}
-                    {CheckBox("showEccentricDeferentLine", "Show Eccentric-Deferent Line")}
+                    {/*{CheckBox("showPlanetVector", "Show Planet Vector")}*/}
+                    {/*{CheckBox("showEquantVector", "Show Equant Vector")}*/}
+                    {/*{CheckBox("showEarthSunLine", "Show Earth-Sun Line")}*/}
+                    {/*{CheckBox("showEpicyclePlanetLine", "Show Epicycle Planet Line")}*/}
+                    {/*{CheckBox("showEccentricDeferentLine", "Show Eccentric-Deferent Line")}*/}
                     {CheckBox("showElongationAngle", "Show Elongation Angle")}
                 </div>
                 <p></p>
